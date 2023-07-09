@@ -1,4 +1,5 @@
 using kolokwium.AppContext;
+using kolokwium.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,7 +28,8 @@ namespace kolokwium
         {
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationContext>(options =>
-            options.UseSqlServer(Configuration["ConnectionString:Default"]));
+            options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            services.AddScoped<IReservationService,ReservationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

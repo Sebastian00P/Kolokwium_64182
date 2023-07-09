@@ -1,0 +1,103 @@
+﻿@model IEnumerable<kolokwium.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">
+        <div class="float-left" style="padding-bottom: 5px;">
+            <input type="button" class="btn btn-primary" value="Dodaj nową rezerwację" />
+        </div>
+    </a>
+</p>
+<table class="table">
+    <thead>
+        <tr>   
+            <th>
+                Imię
+            </th>
+            <th>
+                Nazwisko
+            </th>
+            <th>
+                Adres
+            </th>
+            <th>
+                Liczba osób
+            </th>
+            <th>
+                Liczba osób
+            </th>
+            <th>
+                Czy są osoby poniżej 12 roku
+            </th>
+            <th>
+                Data od rezerwacji
+            </th>
+            <th>
+                Data do rezerwacji
+            </th>
+            <th>
+                Typ pokoju
+            </th>
+            <th>
+                Liczba osób poniżej 12 roku życia
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr class="element @(item.EndDate < DateTime.Now ? "expired" : "")">              
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumberOfPeople)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HasKids)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StarDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.KidsUnderAge)
+                    </td>     
+                    <td>
+                        <div class="float-right" style="padding: 5px">
+                        <button class="btn btn-danger comeback-btn" onclick="location.href='@Url.Action("Delete", "Reservation", new { reservationId=item.Id })'">
+                            <i class="fa-solid">Usuń</i>
+                        </button>
+                    </div>
+            </td>
+            
+        </tr>
+}
+    </tbody>
+</table>
+
+
+<style>
+    .expired {
+        color: gray;
+    }
+</style>

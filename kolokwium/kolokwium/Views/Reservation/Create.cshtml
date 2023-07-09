@@ -1,0 +1,123 @@
+﻿@model kolokwium.ViewModel.ReservationViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Reservation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateReservation" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Imię</label>
+                <input asp-for="Reservation.Name" class="form-control" />
+                <span asp-validation-for="Reservation.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Nazwisko</label>
+                <input asp-for="Reservation.LastName" class="form-control" />
+                <span asp-validation-for="Reservation.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Adres</label>
+                <input asp-for="Reservation.Address" class="form-control" />
+                <span asp-validation-for="Reservation.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Nr telefonu</label>
+                <input asp-for="Reservation.Phone" class="form-control" />
+                <span asp-validation-for="Reservation.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Liczba osób</label>
+                <input asp-for="Reservation.NumberOfPeople" class="form-control" />
+                <span asp-validation-for="Reservation.NumberOfPeople" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Reservation.HasKids" /> Czy są osoby poniżej 12 roku
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Data od rezerwacji</label>
+                <input asp-for="Reservation.StarDate" class="form-control" min="@DateTime.Now.ToString("yyy-MM-dd")" />
+                <span asp-validation-for="Reservation.StarDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Data do rezerwacji</label>
+                <input asp-for="Reservation.EndDate" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" onchange="validateEndDate()" />
+                <span asp-validation-for="Reservation.EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="RoomType">Typ pokoju</label>
+                <select class="form-control" id="RoomType" name="RoomType">
+                    @foreach (var item in Model.RoomTypes)
+                    {
+                        <option value="@item.Name">@item.Name</option>
+                    }
+                                     
+                </select>
+            </div>
+            <div class="form-group hideIfCheckbox">
+                <label class="control-label">
+                    Liczba osób poniżej 12 roku życia
+                </label>
+                <input asp-for="Reservation.KidsUnderAge" class="form-control" />
+                <span asp-validation-for="Reservation.KidsUnderAge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script>
+   
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkbox = document.querySelector('.form-check-input');
+        const divToHide = document.querySelector('.hideIfCheckbox');
+
+        if (!checkbox.checked) {
+            divToHide.style.display = 'none';
+        } else {
+            divToHide.style.display = 'block';
+        }
+
+        checkbox.addEventListener('change', function () {
+            if (!checkbox.checked) {
+                divToHide.style.display = 'none';
+            } else {
+                divToHide.style.display = 'block';
+            }
+        });
+    });
+
+    function validateEndDate() {
+        const startDateInput = document.querySelector('#Reservation_StarDate');
+        const endDateInput = document.querySelector('#Reservation_EndDate');
+        console.log(startDateInput);
+        console.log(endDateInput);
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+
+        if (endDate < startDate) {
+            endDateInput.value = startDateInput.value;
+        }
+    }
+</script>
